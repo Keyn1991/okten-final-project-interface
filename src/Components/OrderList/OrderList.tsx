@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Table } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+
+import {Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomPagination from '../CustomPagination/CustomPagination';
-import { Order, OrderListResponse } from '../../interface/interface';
+import {Order} from '../../interface/interface';
+import {OrderService} from "../../service/authService";
 
 const OrderList: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -16,9 +17,7 @@ const OrderList: React.FC = () => {
 
     const fetchOrders = async (page: number) => {
         try {
-            const response = await axios.get<OrderListResponse>(
-                `http://localhost:5000/orders?page=${page}`
-            );
+            const response = await OrderService.getOrders(page);
             const { orders, totalPages } = response.data;
             setOrders(orders);
             setTotalPages(totalPages);

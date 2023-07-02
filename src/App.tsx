@@ -9,7 +9,6 @@ function App() {
   return (
     <div className="App">
         <Routes>
-
             <Route path={'/'} element={<LoginPage/>}/>
             <Route path={'/orders'} element={<OrderPage/>}/>
         </Routes>

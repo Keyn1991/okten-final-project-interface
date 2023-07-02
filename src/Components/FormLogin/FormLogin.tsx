@@ -1,40 +1,33 @@
-import React, {useState} from 'react';
-import {Avatar, Box, Button, Container, CssBaseline, TextField, Typography,} from '@mui/material';
+import React, { useState } from 'react';
+import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { login } from '..//../service/authService';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
 
-    const handleEmailChange = (e: any) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
     };
 
-    const handlePasswordChange = (e: any) => {
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/login', {
-                email,
-                password,
-            });
-
+            const response = await login(email, password);
             const { access_token } = response.data;
             console.log(access_token);
 
-            setIsLoggedIn(true);
             navigate('/orders'); // Перенаправлення на сторінку "orders" після успішної авторизації
         } catch (error) {
-            setError('An error occurred');
+            console.error('An error occurred');
         }
     };
 
