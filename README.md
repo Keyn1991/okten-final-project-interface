@@ -9,15 +9,79 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+## API Collection
 
-### `npm test`
+### Authentication
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Login**
+- Method: POST
+- URL: http://localhost:5000/login
+- Headers:
+  - Content-Type: application/json
+- Body:
+  ```json
+  {
+    "email": "admin@gmail.com",
+    "password": "admin"
+  }
+{
+  "access_token": "your_access_token"
+}
+
+**Orders**
+
+Get all orders
+Retrieves a list of all orders.
+
+Method: GET
+URL: http://localhost:5000/orders
+Query Parameters:
+limit (optional): The number of orders per page (default: 25)
+page (optional): The page number (default: 1)
+sort (optional): The sorting order of the orders (asc or desc)
+Response:
+Status: 200 OK
+Body:
+{
+  "orders": [
+    {
+      "id": "1",
+      "name": "Order 1"
+    },
+    {
+      "id": "2",
+      "name": "Order 2"
+    }
+  ],
+  "totalOrders": 2
+}
+Method: GET
+URL: http://localhost:5000/orders/:page
+Parameters:
+page: The page number
+Query Parameters:
+limit (optional): The number of orders per page (default: 25)
+sort (optional): The sorting order of the orders (asc or desc)
+Response:
+Status: 200 OK
+Body:
+{
+  "orders": [
+    {
+      "id": "1",
+      "name": "Order 1"
+    },
+    {
+      "id": "2",
+      "name": "Order 2"
+    }
+  ],
+  "totalOrders": 2
+}
 
 ### `npm run build`
 
