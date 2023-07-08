@@ -53,6 +53,15 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                 </Pagination.Item>
             );
         } else if (currentPage >= totalPages - 2) {
+            paginationItems.push(
+                <Pagination.Item
+                    key={1}
+                    active={currentPage === 1}
+                    onClick={() => handlePageChange(1)}
+                >
+                    1
+                </Pagination.Item>
+            );
             paginationItems.push(<Pagination.Ellipsis key="ellipsis2" />);
             paginationItems.push(
                 ...Array.from({ length: 3 }, (_, index) => totalPages - 2 + index).map((pageNumber) => (
@@ -66,7 +75,25 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                 ))
             );
         } else {
+            paginationItems.push(
+                <Pagination.Item
+                    key={1}
+                    active={currentPage === 1}
+                    onClick={() => handlePageChange(1)}
+                >
+                    1
+                </Pagination.Item>
+            );
             paginationItems.push(<Pagination.Ellipsis key="ellipsis3" />);
+            paginationItems.push(
+                <Pagination.Item
+                    key={currentPage - 1}
+                    active={false}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                >
+                    {currentPage - 1}
+                </Pagination.Item>
+            );
             paginationItems.push(
                 <Pagination.Item
                     key={currentPage}
@@ -74,6 +101,15 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                     onClick={() => handlePageChange(currentPage)}
                 >
                     {currentPage}
+                </Pagination.Item>
+            );
+            paginationItems.push(
+                <Pagination.Item
+                    key={currentPage + 1}
+                    active={false}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                >
+                    {currentPage + 1}
                 </Pagination.Item>
             );
             paginationItems.push(<Pagination.Ellipsis key="ellipsis4" />);
@@ -90,6 +126,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 
         return paginationItems;
     };
+
 
     return (
         <div className="d-flex justify-content-center">

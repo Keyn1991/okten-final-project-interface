@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ function LoginForm() {
             const { access_token } = response.data;
             console.log(access_token);
 
-            navigate('/orders'); // Перенаправлення на сторінку "orders" після успішної авторизації
+            navigate('/orders');
         } catch (error) {
             console.error('An error occurred');
         }
