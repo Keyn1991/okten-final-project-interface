@@ -12,6 +12,16 @@ export interface Order {
     sum: number;
     alreadyPaid: number;
     created_at: string;
+
+    [key: string]: any;
+
+    comment: {
+        text: string;
+        author: string | null;
+        date: string;
+    };
+    utm: string;
+    message: string; // Додайте поле 'message'
 }
 
 export interface OrderListResponse {
@@ -23,4 +33,16 @@ export interface CustomPaginationProps {
     totalPages: number;
     currentPage: number;
     handlePageChange: (page: number) => void;
+
+
+
+}
+
+export interface OrderCardProps {
+    order: Order;
+    index: number;
+    currentPage: number;
+    author: string;
+
+
 }

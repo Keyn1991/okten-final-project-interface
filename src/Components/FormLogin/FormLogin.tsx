@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useNavigate } from 'react-router-dom';
-import { login } from '..//../service/authService';
+import {Link, useNavigate} from 'react-router-dom';
+import { login } from '../../service/authService';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
@@ -49,7 +49,7 @@ function LoginForm() {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
                     <TextField
                         margin="normal"
                         required
@@ -74,11 +74,86 @@ function LoginForm() {
                         value={password}
                         onChange={handlePasswordChange}
                     />
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            mt: 3,
+                            mb: 2,
+                            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                            color: 'white',
+                            '&:hover': {
+                                opacity: 0.8,
+                            },
+                        }}
+                    >
                         Sign In
                     </Button>
+                    <Typography variant="body2">
+                        <Link to="#" onClick={() => console.log('Forgot password clicked')}>
+                            Forgot password?
+                        </Link>
+                    </Typography>
                 </Box>
             </Box>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    width: '20%',
+                    backgroundColor: '#f5f5f5',
+                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '1rem',
+                    animation: 'adSlideLeft 1s infinite alternate',
+                }}
+            >
+                <Typography variant="body1"><img src="https://kartinkin.net/uploads/posts/2022-02/1645728640_42-kartinkin-net-p-letnie-kartinki-na-telefon-46.jpg" alt="lato"/></Typography>
+            </Box>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: '20%',
+                    backgroundColor: '#f5f5f5',
+                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '1rem',
+                    animation: 'adSlideRight 1s infinite alternate',
+                }}
+            >
+                <Typography variant="body1"><img src="https://kartinkin.net/uploads/posts/2022-02/1645728640_42-kartinkin-net-p-letnie-kartinki-na-telefon-46.jpg" alt="lato"/></Typography>
+            </Box>
+            <style>
+                {`
+        @keyframes adSlideLeft {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(0%);
+          }
+        }
+
+        @keyframes adSlideRight {
+          0% {
+            transform: translateX(100%);
+          }
+          100% {
+            transform: translateX(0%);
+          }
+        }
+      `}
+            </style>
         </Container>
     );
 }

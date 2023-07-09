@@ -10,6 +10,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                                                                totalPages,
                                                                currentPage,
                                                                handlePageChange,
+
                                                            }) => {
     const renderPaginationItems = () => {
         if (totalPages <= 5) {
