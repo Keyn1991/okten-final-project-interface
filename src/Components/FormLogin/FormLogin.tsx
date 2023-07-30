@@ -1,13 +1,27 @@
 import React, { useState } from 'react';
 
-import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Button,
+    Container,
+    CssBaseline,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField,
+    Typography,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../service/authService';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +42,12 @@ function LoginForm() {
 
             navigate('/orders');
         } catch (error) {
-            console.error('An error occurred');
+            setOpenModal(true);
         }
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
     };
 
     return (
@@ -47,7 +65,7 @@ function LoginForm() {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Увійти
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
                     <TextField
@@ -55,7 +73,7 @@ function LoginForm() {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label="Електронна пошта"
                         name="email"
                         autoComplete="email"
                         autoFocus
@@ -67,7 +85,7 @@ function LoginForm() {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label="Пароль"
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -88,72 +106,26 @@ function LoginForm() {
                             },
                         }}
                     >
-                        Sign In
+                        Увійти
                     </Button>
                     <Typography variant="body2">
-                        <Link to="#" onClick={() => console.log('Forgot password clicked')}>
-                            Forgot password?
+                        <Link to="#" onClick={() => console.log('Клік на "Забули пароль?"')}>
+                            Забули пароль?
                         </Link>
                     </Typography>
                 </Box>
             </Box>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                    width: '20%',
-                    backgroundColor: '#f5f5f5',
-                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '1rem',
-                    animation: 'adSlideLeft 1s infinite alternate',
-                }}
-            >
-                <Typography variant="body1"><img src="https://kartinkin.net/uploads/posts/2022-02/1645728640_42-kartinkin-net-p-letnie-kartinki-na-telefon-46.jpg" alt="lato"/></Typography>
-            </Box>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: '20%',
-                    backgroundColor: '#f5f5f5',
-                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '1rem',
-                    animation: 'adSlideRight 1s infinite alternate',
-                }}
-            >
-                <Typography variant="body1"><img src="https://kartinkin.net/uploads/posts/2022-02/1645728640_42-kartinkin-net-p-letnie-kartinki-na-telefon-46.jpg" alt="lato"/></Typography>
-            </Box>
-            <style>
-                {`
-        @keyframes adSlideLeft {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(0%);
-          }
-        }
-
-        @keyframes adSlideRight {
-          0% {
-            transform: translateX(100%);
-          }
-          100% {
-            transform: translateX(0%);
-          }
-        }
-      `}
-            </style>
+            <Dialog open={openModal} onClose={handleCloseModal}>
+                <DialogTitle>Помилка</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Сталася помилка при вході. Перевірте електронну пошту та пароль.</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseModal} autoFocus>
+                        Закрити
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     );
 }
