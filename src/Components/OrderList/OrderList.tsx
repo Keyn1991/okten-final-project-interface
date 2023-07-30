@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 
 import CustomPagination from "../CustomPagination/CustomPagination";
 import OrderCard from "../OrderCard/OrderCard";
-import { Order } from "../../interface/interface";
-import { Table } from "react-bootstrap";
-import { Input } from "@mui/material";
+import {Order} from "../../interface/interface";
+import {Table} from "react-bootstrap";
+import {Input} from "@mui/material";
+import {OrderService} from "../../service";
 
 interface OrderTableProps {}
 
@@ -19,10 +19,8 @@ const OrderList: React.FC<OrderTableProps> = () => {
     const handleSort = (key: string) => {
         setSortConfig((prevSortConfig) => {
             if (prevSortConfig && prevSortConfig.key === key) {
-                // If the same column header is clicked, toggle the sort direction
                 return { key, direction: prevSortConfig.direction === 'asc' ? 'desc' : 'asc' };
             }
-            // If a different column header is clicked, set the default sort direction as 'asc'
             return { key, direction: 'asc' };
         });
     };
@@ -32,18 +30,11 @@ const OrderList: React.FC<OrderTableProps> = () => {
     };
 
     useEffect(() => {
-        // Fetch orders data from the server
         const fetchOrders = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/orders', {
-                    params: {
-                        page: currentPage,
-                        sort: sortConfig?.direction,
-                        filter,
-                    },
-                });
-                setOrders(response.data.orders);
-                setTotalPages(response.data.totalPages);
+                const response = await OrderService.getOrders(currentPage, sortConfig, filter);
+                setOrders(response.orders);
+                setTotalPages(response.totalPages);
             } catch (error) {
                 console.error('Error fetching orders:', error);
             }
@@ -51,8 +42,21 @@ const OrderList: React.FC<OrderTableProps> = () => {
 
         fetchOrders();
 
-        // Змінюємо адресу у браузері під час пагінації
-        window.history.replaceState({}, '', `/page/${currentPage}`);
+        const params = new URLSearchParams();
+        params.append('page', currentPage.toString());
+
+        if (sortConfig) {
+            params.append('sort', sortConfig.direction);
+            params.append('sortBy', sortConfig.key);
+        }
+
+        if (filter) {
+            params.append('filter', filter);
+        }
+
+        // Update the URL with the new parameters
+        const newURL = `/page/${currentPage}?${params.toString()}`;
+        window.history.replaceState({}, '', newURL);
     }, [currentPage, sortConfig, filter]);
 
     const handlePageChange = (page: number) => {
@@ -113,6 +117,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
                 <tbody>
                 {orders.map((order: Order, index: number) => (
                     <OrderCard
+                        key={index}
                         order={order}
                         index={index}
                         currentPage={currentPage}

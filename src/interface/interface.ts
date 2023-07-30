@@ -1,5 +1,5 @@
 export interface Order {
-    id: number;
+    id: string;
     name: string;
     surname: string;
     email: string;
@@ -21,7 +21,7 @@ export interface Order {
         date: string;
     };
     utm: string;
-    message: string; // Додайте поле 'message'
+    message: string;
 }
 
 export interface OrderListResponse {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-
-import { TableRow, TableCell, Collapse, Typography, TextField, Button } from '@mui/material';
-import { OrderCardProps, Order } from '../../interface/interface';
+import React, {useState} from 'react';
+import {Button, Collapse, TableCell, TableRow, TextField, Typography} from '@mui/material';
+import {Order, OrderCardProps} from '../../interface/interface';
+import {OrderService} from '../../service';
 
 const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -26,7 +26,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
         setNewGroup(event.target.value);
     };
 
-    const handleSubmitComment = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitComment = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!order.manager) {
             const currentManager: string | null = null;
@@ -40,8 +40,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
                     date: new Date().toISOString(),
                 },
             };
-            // Perform order update in the database
-            updateOrder(updatedOrder);
+
+            try {
+                await OrderService.updateOrder(updatedOrder);
+            } catch (error: any) {
+                console.error('Помилка при оновленні замовлення:', error.message);
+            }
         }
         setComment('');
     };
@@ -57,26 +61,24 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
         setNewGroup('');
     };
 
-    const handleSubmitEdit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitEdit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const updatedOrder: Order = {
             ...order,
             group: newGroup || order.group,
         };
-        // Perform order update in the database
-        updateOrder(updatedOrder);
-        setEditMode(false);
-        setNewGroup('');
+
+        try {
+            await OrderService.updateOrder(updatedOrder);
+            setEditMode(false);
+            setNewGroup('');
+        } catch (error: any) {
+            console.error('Помилка при оновленні замовлення:', error.message);
+        }
     };
 
     const getCurrentUser = (): string | null => {
-        // Logic to get the current logged-in user's last name
-        // Return the last name as a string or null if the user is not logged in
         return null;
-    };
-
-    const updateOrder = (updatedOrder: Order) => {
-        // Perform order update in the database
     };
 
     return (
