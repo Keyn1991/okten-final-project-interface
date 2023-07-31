@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+
 import {Button, Collapse, TableCell, TableRow, TextField, Typography} from '@mui/material';
 import {Order, OrderCardProps} from '../../interface/interface';
 import {OrderService} from '../../service';
@@ -50,11 +51,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
         setComment('');
     };
 
-    const handleEditOrder = () => {
-        if (!order.manager) {
-            setEditMode(true);
-        }
-    };
+    // const handleEditOrder = () => {
+    //     if (!order.manager) {
+    //         setEditMode(true);
+    //     }
+    // };
 
     const handleCancelEdit = () => {
         setEditMode(false);

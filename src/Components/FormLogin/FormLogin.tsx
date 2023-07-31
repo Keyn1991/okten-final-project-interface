@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 
 import {
     Avatar,
@@ -15,14 +16,16 @@ import {
     Typography,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../service/authService';
+
+import {login} from '../../service/authService';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [openModal, setOpenModal] = useState(false);
+
     const navigate = useNavigate();
+
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -38,19 +41,21 @@ function LoginForm() {
         try {
             const response = await login(email, password);
             const { access_token } = response.data;
-            console.log(access_token);
+
+
+            localStorage.setItem('access_token', access_token);
 
             navigate('/orders');
         } catch (error) {
             setOpenModal(true);
         }
     };
-
     const handleCloseModal = () => {
         setOpenModal(false);
     };
 
     return (
+
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -105,6 +110,7 @@ function LoginForm() {
                                 opacity: 0.8,
                             },
                         }}
+                        disabled={!email || !password}
                     >
                         Увійти
                     </Button>

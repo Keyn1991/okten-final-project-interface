@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {Order, OrderListResponse} from "../interface/interface";
 import baseURL from "../config/config";
-import axiosSevice from "./axiosService";
+import axiosService from "./axiosService";
 
 const OrderService = {
 
@@ -43,7 +43,16 @@ const OrderService = {
     },
 };
 const login = async (email: string, password: string) => {
-    return await axiosSevice.post('/login', { email, password });
+    return await axiosService.post('/login', { email, password });
+};
+
+export const isAuthenticated = () => {
+    const accessToken = localStorage.getItem('access_token');
+    return !!accessToken;
+};
+
+export const logout = () => {
+    localStorage.removeItem('access_token');
 };
 
 export {login, OrderService};

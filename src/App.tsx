@@ -1,10 +1,11 @@
 import React from 'react';
-
-import './App.css';
 import {Route, Routes} from "react-router-dom";
+
 import LoginPage from "./pages/login/loginPage";
 import OrderPage from "./pages/orders/orderPage";
 import NotFound from "./pages/NotFound/NotFound";
+
+import './App.css';
 
 function App() {
   return (

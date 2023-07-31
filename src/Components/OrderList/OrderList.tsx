@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 
-import CustomPagination from "../CustomPagination/CustomPagination";
-import OrderCard from "../OrderCard/OrderCard";
 import {Order} from "../../interface/interface";
 import {Table} from "react-bootstrap";
 import {Input} from "@mui/material";
-import {OrderService} from "../../service";
+
+import {isAuthenticated, logout, OrderService} from "../../service";
+import CustomPagination from "../CustomPagination/CustomPagination";
+import OrderCard from "../OrderCard/OrderCard";
+import {Link, useNavigate} from "react-router-dom";
+import Button from "@mui/material/Button";
 
 interface OrderTableProps {}
 
@@ -16,6 +19,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
     const [filter, setFilter] = useState<string>('');
 
+    const navigate = useNavigate();
     const handleSort = (key: string) => {
         setSortConfig((prevSortConfig) => {
             if (prevSortConfig && prevSortConfig.key === key) {
@@ -24,7 +28,10 @@ const OrderList: React.FC<OrderTableProps> = () => {
             return { key, direction: 'asc' };
         });
     };
-
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFilter(e.target.value);
     };
@@ -54,8 +61,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
             params.append('filter', filter);
         }
 
-        // Update the URL with the new parameters
-        const newURL = `/page/${currentPage}?${params.toString()}`;
+        const newURL = `?${params.toString()}`;
         window.history.replaceState({}, '', newURL);
     }, [currentPage, sortConfig, filter]);
 
@@ -67,6 +73,11 @@ const OrderList: React.FC<OrderTableProps> = () => {
 
     return (
         <div>
+            {isAuthenticated() ? (
+                <Button onClick={handleLogout}>Вийти</Button>
+            ) : (
+                <Link to="/login">Вийти</Link>
+            )}
             <Table striped bordered hover size="sm">
                 <thead>
                 <tr className="table-success">
