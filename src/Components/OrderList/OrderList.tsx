@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {Order} from "../../interface/interface";
+import {Order, OrderTableProps} from "../../interface/order.Interface";
 import {Table} from "react-bootstrap";
 import {Input} from "@mui/material";
 
@@ -10,7 +10,7 @@ import OrderCard from "../OrderCard/OrderCard";
 import {Link, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 
-interface OrderTableProps {}
+
 
 const OrderList: React.FC<OrderTableProps> = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -27,6 +27,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
             }
             return { key, direction: 'asc' };
         });
+        setCurrentPage(1);
     };
     const handleLogout = () => {
         logout();
@@ -34,6 +35,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
     };
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFilter(e.target.value);
+        setCurrentPage(1);
     };
 
     useEffect(() => {

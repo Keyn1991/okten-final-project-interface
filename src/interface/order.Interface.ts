@@ -46,3 +46,4 @@ export interface OrderCardProps {
 
 
 }
+export interface OrderTableProps {}

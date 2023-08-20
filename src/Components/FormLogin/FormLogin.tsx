@@ -19,7 +19,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import {login} from '../../service/authService';
 
-function LoginForm() {
+const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [openModal, setOpenModal] = useState(false);
@@ -44,6 +44,7 @@ function LoginForm() {
 
 
             localStorage.setItem('access_token', access_token);
+            console.log(access_token)
 
             navigate('/orders');
         } catch (error) {
@@ -134,6 +135,6 @@ function LoginForm() {
             </Dialog>
         </Container>
     );
-}
+};
 
 export default LoginForm;

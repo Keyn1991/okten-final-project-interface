@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {Button, Collapse, TableCell, TableRow, TextField, Typography} from '@mui/material';
-import {Order, OrderCardProps} from '../../interface/interface';
+import {Order, OrderCardProps} from '../../interface/order.Interface';
 import {OrderService} from '../../service';
 
 const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {

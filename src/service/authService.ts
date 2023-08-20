@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {Order, OrderListResponse} from "../interface/interface";
+import {Order, OrderListResponse} from "../interface/order.Interface";
 import baseURL from "../config/config";
 import axiosService from "./axiosService";
 
@@ -27,19 +27,32 @@ const OrderService = {
     },
 
     getOrders: async (page: number, sortConfig: { key: string; direction: 'asc' | 'desc' } | null, filter: string) => {
-        const params = {
-            page,
-            sort: sortConfig?.direction,
-            filter,
-        };
+        let timer: NodeJS.Timeout | null = null;
 
-        try {
-            const response = await axios.get<OrderListResponse>(`${baseURL}/orders`, { params });
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-            throw error;
-        }
+        return new Promise<OrderListResponse>((resolve, reject) => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+
+            timer = setTimeout(async () => {
+                try {
+                    const params: { [key: string]: any } = {
+                        page,
+                        sort: sortConfig?.direction,
+                    };
+
+                    if (filter) {
+                        params.filter = filter;
+                    }
+
+                    const response = await axios.get<OrderListResponse>(`${baseURL}/orders`, { params });
+                    resolve(response.data);
+                } catch (error) {
+                    console.error('Error fetching orders:', error);
+                    reject(error);
+                }
+            }, 500);
+        });
     },
 };
 const login = async (email: string, password: string) => {
