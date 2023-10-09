@@ -1,15 +1,45 @@
 import axios from 'axios';
 
-export const OrderService = {
-    getOrders: async (page: number, sortColumn?: string, sortDirection?: string) => {
+import {Order, OrderListResponse} from "../interface/order.Interface";
+import baseURL from "../config/config";
+
+const OrderService = {
+    updateOrder: async (updatedOrder: Order) => {
         try {
-            const response = await axios.get(`/api/orders?page=${page}&sortColumn=${sortColumn}&sortDirection=${sortDirection}`);
+            const response = await axios.put(`${baseURL}/orders/${updatedOrder.id}`, updatedOrder, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.data.success) {
+                throw new Error('Failed to update order');
+            }
+
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching orders');
+            console.error('Error updating order:', error);
+            throw error;
         }
     },
-    // Other methods...
-};
 
-export default OrderService
+
+    getOrders: async (page: number, sortConfig: { key: string; direction: 'asc' | 'desc' } | null, filter: string) => {
+        try {
+            const response = await axios.get<OrderListResponse>(`${baseURL}/orders`, {
+                params: {
+                    page,
+                    sort: sortConfig ? sortConfig.direction : undefined,
+                    sortBy: sortConfig ? sortConfig.key : undefined,
+                    filter,
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            throw error;
+        }
+    },
+};
+export default OrderService;

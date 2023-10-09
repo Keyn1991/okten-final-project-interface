@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 
 import {Button, Collapse, TableCell, TableRow, TextField, Typography} from '@mui/material';
 import {Order, OrderCardProps} from '../../interface/order.Interface';
-import {OrderService} from '../../service';
+import OrderService from "../../service/OrderService";
+
 
 const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -125,7 +126,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
                     </Collapse>
                     {editMode && !order.manager && (
                         <div>
-                            {/* Edit form */}
                             <form onSubmit={handleSubmitEdit}>
                                 <TextField
                                     type="text"

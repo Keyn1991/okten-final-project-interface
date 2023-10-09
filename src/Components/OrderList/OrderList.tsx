@@ -1,25 +1,37 @@
 import React, {useEffect, useState} from 'react';
-
 import {Order, OrderTableProps} from "../../interface/order.Interface";
 import {Table} from "react-bootstrap";
 import {Input} from "@mui/material";
 
-import {isAuthenticated, logout, OrderService} from "../../service";
+import {isAuthenticated, logout} from "../../service";
 import CustomPagination from "../CustomPagination/CustomPagination";
 import OrderCard from "../OrderCard/OrderCard";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
+import OrderService from "../../service/OrderService";
 
 
 
 const OrderList: React.FC<OrderTableProps> = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // Отримання параметрів з URL
+    const searchParams = new URLSearchParams(location.search);
+    const pageParam = searchParams.get('page');
+    const sortParam = searchParams.get('sort');
+    const sortByParam = searchParams.get('sortBy');
+    const filterParam = searchParams.get('filter');
+
     const [orders, setOrders] = useState<Order[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
-    const [filter, setFilter] = useState<string>('');
+    const [currentPage, setCurrentPage] = useState<number>(Number(pageParam) || 1);
+    const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(
+        sortParam && sortByParam ? { key: sortByParam, direction: sortParam as 'asc' | 'desc' } : null
+    );
+    const [filter, setFilter] = useState<string>(filterParam || '');
 
-    const navigate = useNavigate();
+
     const handleSort = (key: string) => {
         setSortConfig((prevSortConfig) => {
             if (prevSortConfig && prevSortConfig.key === key) {
@@ -29,10 +41,12 @@ const OrderList: React.FC<OrderTableProps> = () => {
         });
         setCurrentPage(1);
     };
+
     const handleLogout = () => {
         logout();
         navigate('/');
     };
+
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFilter(e.target.value);
         setCurrentPage(1);
@@ -51,26 +65,29 @@ const OrderList: React.FC<OrderTableProps> = () => {
 
         fetchOrders();
 
-        const params = new URLSearchParams();
-        params.append('page', currentPage.toString());
-
+        // Оновлення URL
+        const newSearchParams = new URLSearchParams(location.search);
+        newSearchParams.set('page', currentPage.toString());
         if (sortConfig) {
-            params.append('sort', sortConfig.direction);
-            params.append('sortBy', sortConfig.key);
+            newSearchParams.set('sort', sortConfig.direction);
+            newSearchParams.set('sortBy', sortConfig.key);
+        } else {
+            newSearchParams.delete('sort');
+            newSearchParams.delete('sortBy');
         }
-
         if (filter) {
-            params.append('filter', filter);
+            newSearchParams.set('filter', filter);
+        } else {
+            newSearchParams.delete('filter');
         }
 
-        const newURL = `?${params.toString()}`;
+        const newURL = `?${newSearchParams.toString()}`;
         window.history.replaceState({}, '', newURL);
-    }, [currentPage, sortConfig, filter]);
+    }, [currentPage, sortConfig, filter, location.search]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
-
 
 
     return (
@@ -146,8 +163,6 @@ const OrderList: React.FC<OrderTableProps> = () => {
                 handlePageChange={handlePageChange}
             />
 
-
-            {/* Filter input */}
             <div>
                 <Input
                     type="text"
