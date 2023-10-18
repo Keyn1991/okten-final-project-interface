@@ -83,6 +83,19 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
         return null;
     };
 
+    const formatDate = (dateString: string): string => {
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short'
+        };
+        return new Intl.DateTimeFormat(undefined, options).format(new Date(dateString));
+    };
+
     return (
         <>
             <TableRow key={index} onClick={toggleExpand}>
@@ -98,8 +111,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, index, currentPage }) => {
                 <TableCell>{order.status}</TableCell>
                 <TableCell>{order.sum}</TableCell>
                 <TableCell>{order.alreadyPaid}</TableCell>
-                <TableCell>{order.created_at}</TableCell>
-                <TableCell>{order.created_at}</TableCell>
+                <TableCell>{formatDate(order.created_at as string)}</TableCell>
+                <TableCell>{formatDate(order.created_at as string)}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={14}>

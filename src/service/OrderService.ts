@@ -31,7 +31,7 @@ const OrderService = {
                     page,
                     sort: sortConfig ? sortConfig.direction : undefined,
                     sortBy: sortConfig ? sortConfig.key : undefined,
-                    filter,
+                    filter: filter ? filter : undefined,
                 },
             });
 

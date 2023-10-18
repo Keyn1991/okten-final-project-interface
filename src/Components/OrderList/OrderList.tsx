@@ -55,7 +55,8 @@ const OrderList: React.FC<OrderTableProps> = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await OrderService.getOrders(currentPage, sortConfig, filter);
+                const response = await OrderService.getOrders(currentPage, sortConfig, filter );
+
                 setOrders(response.orders);
                 setTotalPages(response.totalPages);
             } catch (error) {
@@ -65,7 +66,6 @@ const OrderList: React.FC<OrderTableProps> = () => {
 
         fetchOrders();
 
-        // Оновлення URL
         const newSearchParams = new URLSearchParams(location.search);
         newSearchParams.set('page', currentPage.toString());
         if (sortConfig) {
@@ -75,7 +75,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
             newSearchParams.delete('sort');
             newSearchParams.delete('sortBy');
         }
-        if (filter) {
+        if (filter !== '') {
             newSearchParams.set('filter', filter);
         } else {
             newSearchParams.delete('filter');
@@ -101,7 +101,7 @@ const OrderList: React.FC<OrderTableProps> = () => {
                 <thead>
                 <tr className="table-success">
                     <th onClick={() => handleSort('id')} className={sortConfig?.key === 'id' ? 'table-active' : ''}>
-                        id
+                        #
                     </th>
                     <th onClick={() => handleSort('surname')} className={sortConfig?.key === 'surname' ? 'table-active' : ''}>
                         Surname

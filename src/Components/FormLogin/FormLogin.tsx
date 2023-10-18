@@ -44,7 +44,7 @@ const LoginForm = () => {
 
 
             localStorage.setItem('access_token', access_token);
-            console.log(access_token)
+            // console.log(access_token)
 
             navigate('/orders');
         } catch (error) {
@@ -116,7 +116,7 @@ const LoginForm = () => {
                         Увійти
                     </Button>
                     <Typography variant="body2">
-                        <Link to="#" onClick={() => console.log('Клік на "Забули пароль?"')}>
+                        <Link to="#" onClick={() => console.log()}>
                             Забули пароль?
                         </Link>
                     </Typography>
